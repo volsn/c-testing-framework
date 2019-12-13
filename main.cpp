@@ -47,14 +47,29 @@ ostream& operator<< (ostream& out, const vector<T>& vi) {
     return out << '[' << Join(vi, ',') << ']';
 }
 
+template <class TestFunc>
+void RunTest (TestFunc func, const string& test_name) {
+    try {
+        func();
+    } catch(runtime_error& e) {
+        std::cout << test_name << " fail: " << e.what() << std::endl;
+    }
+}
+
+void TestAreEqual() {
+    {
+        vector<int> arr {5, 4, 3};
+        vector<int> excepted {3, 4, 5};
+        //std::sort(begin(arr), end(arr));
+        custom_sort(arr);
+
+        AssertEqual(arr, excepted);
+    }
+}
+
 int main() {
 
-    vector<int> arr {5, 4, 3};
-    vector<int> excepted {3, 4, 5};
-    //std::sort(begin(arr), end(arr));
-    custom_sort(arr);
-
-    AssertEqual(excepted, arr);
+    RunTest(TestAreEqual, "TestAreEqual");
 
     return 0;
 }
